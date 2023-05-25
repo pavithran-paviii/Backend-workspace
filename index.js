@@ -1,17 +1,11 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
+const questions = require("./question");
 
 const port = 3000;
 
 let users = [];
-let questions = [
-  {
-    question: "This is a sample question",
-    answers: ["answer 1", "answer 2", "answer 3", "answer 4"],
-    correctAnswer: "answer 2",
-  },
-];
 
 //functions
 function findUserByUsername(email) {
@@ -74,11 +68,10 @@ app.post("/signup", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
     const user = createUser(email, passwordHash);
 
-    res.status(200).send("User created succesful");
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).send("Internal server error!!");
   }
-
 });
 
 //create a questions route which will return all questions array
